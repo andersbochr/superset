@@ -4,12 +4,12 @@ services:
     image: mcr.microsoft.com/devcontainers/base:ubuntu
     command: sleep infinity
 
-  superset-init:
+    superset-init:
     image: apache/superset:latest
     volumes:
       - ../superset_home:/app/superset_home
-    entrypoint: >
-      /bin/bash -lc "
+    command: >
+      /bin/sh -c "
       set -e
       superset db upgrade &&
       superset fab create-admin
@@ -20,6 +20,7 @@ services:
         --password admin &&
       superset init
       "
+
 
   superset:
     image: apache/superset:latest
