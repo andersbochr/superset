@@ -2,20 +2,6 @@ services:
   dev:
     image: mcr.microsoft.com/devcontainers/base:ubuntu
     command: sleep infinity
-    volumes:
-      - ..:/workspaces/${LOCAL_WORKSPACE_FOLDER_BASENAME}:cached
-
-  superset:
-    image: apache/superset:latest
-    depends_on:
-      - superset-init
-    environment:
-      # change this to something secret
-      SUPERSET_SECRET_KEY: "change_me_to_a_random_hex"
-    ports:
-      - "8088:8088"
-    volumes:
-      - ../superset_home:/app/superset_home
 
   superset-init:
     image: apache/superset:latest
@@ -32,3 +18,14 @@ services:
         --password admin &&
       superset init
       "
+
+  superset:
+    image: apache/superset:latest
+    depends_on:
+      - superset-init
+    environment:
+      SUPERSET_SECRET_KEY: "change_me_to_a_random_hex"
+    ports:
+      - "8088:8088"
+    volumes:
+      - ../superset_home:/app/superset_home
